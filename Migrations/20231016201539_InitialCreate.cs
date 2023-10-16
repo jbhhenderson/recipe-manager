@@ -184,6 +184,7 @@ namespace RecipeManager.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserProfileId = table.Column<int>(type: "integer", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Instructions = table.Column<string>(type: "text", nullable: false),
                     Image = table.Column<string>(type: "text", nullable: true)
                 },
@@ -316,12 +317,12 @@ namespace RecipeManager.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "0da8f92f-9f34-45e6-b4a3-b885bfff00d1", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "44ab7182-6674-4033-a105-5f74c155db64", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "83aa1702-0451-449b-8bd4-cec24704d0a1", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAEKigD2sJ4QWdQDlqE0fFrXFAI18LTrpl2/3MAxl/CscCR0r/WShVmEXUrAHLKvA6Cw==", null, false, "ee8dafb6-e627-480c-964e-58e92703849c", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "d8742582-a660-4927-99c8-88eae1163640", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAECKJEzMIbR30/IHhF2VaFY7XR1QhHrHxvyw2mQkWSLQZgVeCibvYNSZztaIR+48bqA==", null, false, "9ea30d29-688a-43ac-863c-24b8bdaa1d51", false, "Administrator" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -335,8 +336,12 @@ namespace RecipeManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "Recipes",
-                columns: new[] { "Id", "DateCreated", "Image", "Instructions", "UserProfileId" },
-                values: new object[] { 1, new DateTime(2023, 10, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images", "Just put them in the oven for a bit", 1 });
+                columns: new[] { "Id", "DateCreated", "Image", "Instructions", "Name", "UserProfileId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 10, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images", "Just put them in the oven for a bit", "Pizza Rolls", 1 },
+                    { 2, new DateTime(2023, 9, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2Fpr1PKyqV23nd0_7lRvlI_sgio5E%3D%2F0x42%3A5613x4252%2F1200x800%2Ffilters%3Afocal(0x42%3A5613x4252)%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_image%2Fimage%2F49760537%2Fshutterstock_255114436.0.0.jpg&f=1&nofb=1&ipt=1151cfda35ef38e477c7da51c62651d7d549348d6a711100920e754106fbfc29&ipo=images", "Grill burger, add cheese", "Cheeseburger", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "ShoppingListItems",

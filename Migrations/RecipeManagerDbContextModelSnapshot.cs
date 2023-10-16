@@ -51,7 +51,7 @@ namespace RecipeManager.Migrations
                         new
                         {
                             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                            ConcurrencyStamp = "0da8f92f-9f34-45e6-b4a3-b885bfff00d1",
+                            ConcurrencyStamp = "44ab7182-6674-4033-a105-5f74c155db64",
                             Name = "Admin",
                             NormalizedName = "admin"
                         });
@@ -150,13 +150,13 @@ namespace RecipeManager.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "83aa1702-0451-449b-8bd4-cec24704d0a1",
+                            ConcurrencyStamp = "d8742582-a660-4927-99c8-88eae1163640",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEKigD2sJ4QWdQDlqE0fFrXFAI18LTrpl2/3MAxl/CscCR0r/WShVmEXUrAHLKvA6Cw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECKJEzMIbR30/IHhF2VaFY7XR1QhHrHxvyw2mQkWSLQZgVeCibvYNSZztaIR+48bqA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ee8dafb6-e627-480c-964e-58e92703849c",
+                            SecurityStamp = "9ea30d29-688a-43ac-863c-24b8bdaa1d51",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -335,6 +335,10 @@ namespace RecipeManager.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("UserProfileId")
                         .HasColumnType("integer");
 
@@ -351,6 +355,16 @@ namespace RecipeManager.Migrations
                             DateCreated = new DateTime(2023, 10, 15, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             Image = "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images",
                             Instructions = "Just put them in the oven for a bit",
+                            Name = "Pizza Rolls",
+                            UserProfileId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateCreated = new DateTime(2023, 9, 15, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2Fpr1PKyqV23nd0_7lRvlI_sgio5E%3D%2F0x42%3A5613x4252%2F1200x800%2Ffilters%3Afocal(0x42%3A5613x4252)%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_image%2Fimage%2F49760537%2Fshutterstock_255114436.0.0.jpg&f=1&nofb=1&ipt=1151cfda35ef38e477c7da51c62651d7d549348d6a711100920e754106fbfc29&ipo=images",
+                            Instructions = "Grill burger, add cheese",
+                            Name = "Cheeseburger",
                             UserProfileId = 1
                         });
                 });

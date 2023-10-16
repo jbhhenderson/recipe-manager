@@ -93,8 +93,18 @@ public class RecipeManagerDbContext : IdentityDbContext<IdentityUser>
                 Id = 1,
                 UserProfileId = 1,
                 DateCreated = new DateTime(2023, 10, 15, 18, 0, 0),
+                Name = "Pizza Rolls",
                 Instructions = "Just put them in the oven for a bit",
                 Image = "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images"
+            },
+            new()
+            {
+                Id = 2,
+                UserProfileId = 1,
+                DateCreated = new DateTime(2023, 9, 15, 18, 0, 0),
+                Name = "Cheeseburger",
+                Instructions = "Grill burger, add cheese",
+                Image = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2Fpr1PKyqV23nd0_7lRvlI_sgio5E%3D%2F0x42%3A5613x4252%2F1200x800%2Ffilters%3Afocal(0x42%3A5613x4252)%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_image%2Fimage%2F49760537%2Fshutterstock_255114436.0.0.jpg&f=1&nofb=1&ipt=1151cfda35ef38e477c7da51c62651d7d549348d6a711100920e754106fbfc29&ipo=images"
             }
         });
 
