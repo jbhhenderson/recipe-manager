@@ -9,6 +9,8 @@ public class Recipe
     public UserProfile UserProfile { get; set; }
     public DateTime DateCreated { get; set; }
     [Required]
+    public string Name { get; set; }
+    [Required]
     public string Instructions { get; set; }
     public string Image { get; set; }
     public List<RecipeIngredient> RecipeIngredients { get; set; }
