@@ -14,6 +14,7 @@ public class RecipeManagerDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Favorite> Favorites { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+    public DbSet<Ingredient> Ingredients { get; set; }
 
     public RecipeManagerDbContext(DbContextOptions<RecipeManagerDbContext> context, IConfiguration config) : base(context)
     {

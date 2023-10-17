@@ -21,4 +21,14 @@ public class RecipeController : ControllerBase
     {
         return Ok(_dbContext.Recipes.OrderByDescending(r => r.DateCreated));
     }
+
+    [HttpGet("my-recipes/{userId}")]
+    [Authorize]
+    public IActionResult GetMyRecipes(int userId)
+    {
+        return Ok(_dbContext
+            .Recipes
+            .Where(r => r.UserProfileId == userId)
+            .OrderByDescending(r => r.DateCreated));
+    }
 }

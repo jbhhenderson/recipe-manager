@@ -3,6 +3,7 @@ import { AuthorizedRoute } from "./auth/AuthorizedRoute";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import RecipeList from "./recipes/RecipeList";
+import MyRecipes from "./recipes/MyRecipes";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -13,6 +14,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <RecipeList />
+            </AuthorizedRoute>
+          }
+        />
+        <Route path="my-recipes"
+          index
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <MyRecipes loggedInUser={loggedInUser} />
             </AuthorizedRoute>
           }
         />
