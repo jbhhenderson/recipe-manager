@@ -33,6 +33,11 @@ return (
                     All Recipes
                     </NavLink>
                 </NavItem>
+                <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/my-recipes">
+                    My Recipes
+                    </NavLink>
+                </NavItem>
             </Nav>
             </Collapse>
             <Button
