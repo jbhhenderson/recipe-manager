@@ -43,6 +43,11 @@ return (
                     My Pantry
                     </NavLink>
                 </NavItem>
+                <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/my-shopping-list">
+                    My Shopping List
+                    </NavLink>
+                </NavItem>
             </Nav>
             </Collapse>
             <Button
