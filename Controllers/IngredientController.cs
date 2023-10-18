@@ -1,23 +1,24 @@
-// using Microsoft.AspNetCore.Mvc;
-// using RecipeManager.Data;
+using Microsoft.AspNetCore.Mvc;
+using RecipeManager.Data;
 
-// namespace RecipeManager.Controllers;
+namespace RecipeManager.Controllers;
 
-// [ApiController]
-// [Route("api/[controller]")]
-// public class IngredientController : ControllerBase
-// {
-//     private RecipeManagerDbContext _dbContext;
-//     private IngredientData ingredients;
-//     public IngredientController(RecipeManagerDbContext context, IngredientData data)
-//     {
-//         _dbContext = context;
-//         ingredients = data;
-//     }
+[ApiController]
+[Route("api/[controller]")]
+public class IngredientController : ControllerBase
+{
+    private RecipeManagerDbContext _dbContext;
+    private SpoonacularAPIService _ingredientService;
+    public IngredientController(RecipeManagerDbContext context, SpoonacularAPIService data)
+    {
+        _dbContext = context;
+        _ingredientService = data;
+    }
 
-//     [HttpGet("{id}")]
-//     public IActionResult GetById(int id)
-//     {
-//         return Ok(_dbContext.Ingredients.SingleOrDefault(i => i.Id == id));
-//     }
-// }
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var ingredient = await _ingredientService.GetById(id);
+        return Ok(ingredient);
+    }
+}

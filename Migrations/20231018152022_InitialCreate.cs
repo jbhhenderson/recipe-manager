@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -47,6 +48,22 @@ namespace RecipeManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Aisle = table.Column<string>(type: "text", nullable: true),
+                    Image = table.Column<string>(type: "text", nullable: true),
+                    PossibleUnits = table.Column<List<string>>(type: "text[]", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -186,6 +203,7 @@ namespace RecipeManager.Migrations
                     DateCreated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Instructions = table.Column<string>(type: "text", nullable: false),
+                    Tagline = table.Column<string>(type: "text", nullable: false),
                     Image = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -299,13 +317,19 @@ namespace RecipeManager.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RecipeId = table.Column<int>(type: "integer", nullable: false),
-                    IngredientId = table.Column<int>(type: "integer", nullable: false),
+                    IngredientNumber = table.Column<int>(type: "integer", nullable: false),
+                    IngredientId = table.Column<int>(type: "integer", nullable: true),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
                     MeasurementUnit = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RecipeIngredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RecipeIngredients_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_RecipeIngredients_Recipes_RecipeId",
                         column: x => x.RecipeId,
@@ -317,12 +341,12 @@ namespace RecipeManager.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "44ab7182-6674-4033-a105-5f74c155db64", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d3d1b4a0-6e8c-4e06-8598-207a222e210f", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "d8742582-a660-4927-99c8-88eae1163640", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAECKJEzMIbR30/IHhF2VaFY7XR1QhHrHxvyw2mQkWSLQZgVeCibvYNSZztaIR+48bqA==", null, false, "9ea30d29-688a-43ac-863c-24b8bdaa1d51", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "9d4abad6-6d33-4deb-a2eb-78b33d0889bf", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAEHlXeQsYGeSNkoSxYoauquelZJdUUnu69KmZjzuXGFLMH4ZxW/J9g1KdWUbS0a0v8g==", null, false, "4cc45cef-d701-4ea6-a695-2bc1010964de", false, "Administrator" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -336,11 +360,11 @@ namespace RecipeManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "Recipes",
-                columns: new[] { "Id", "DateCreated", "Image", "Instructions", "Name", "UserProfileId" },
+                columns: new[] { "Id", "DateCreated", "Image", "Instructions", "Name", "Tagline", "UserProfileId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 10, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images", "Just put them in the oven for a bit", "Pizza Rolls", 1 },
-                    { 2, new DateTime(2023, 9, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2Fpr1PKyqV23nd0_7lRvlI_sgio5E%3D%2F0x42%3A5613x4252%2F1200x800%2Ffilters%3Afocal(0x42%3A5613x4252)%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_image%2Fimage%2F49760537%2Fshutterstock_255114436.0.0.jpg&f=1&nofb=1&ipt=1151cfda35ef38e477c7da51c62651d7d549348d6a711100920e754106fbfc29&ipo=images", "Grill burger, add cheese", "Cheeseburger", 1 }
+                    { 1, new DateTime(2023, 10, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Frichmedia.channeladvisor.com%2FImageDelivery%2FimageService%3FprofileId%3D52000717%26imageID%3D32353%26recipeId%3D243&f=1&nofb=1&ipt=9f97d76f38908a71cffdb9814880702a653d70977380ae4fbe6c3b0aa9fbc4bd&ipo=images", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "Pizza Rolls", "Just put them in the oven for a bit", 1 },
+                    { 2, new DateTime(2023, 9, 15, 18, 0, 0, 0, DateTimeKind.Unspecified), "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.vox-cdn.com%2Fthumbor%2Fpr1PKyqV23nd0_7lRvlI_sgio5E%3D%2F0x42%3A5613x4252%2F1200x800%2Ffilters%3Afocal(0x42%3A5613x4252)%2Fcdn.vox-cdn.com%2Fuploads%2Fchorus_image%2Fimage%2F49760537%2Fshutterstock_255114436.0.0.jpg&f=1&nofb=1&ipt=1151cfda35ef38e477c7da51c62651d7d549348d6a711100920e754106fbfc29&ipo=images", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", "Cheeseburger", "Grill burger, add cheese", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -373,12 +397,8 @@ namespace RecipeManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "RecipeIngredients",
-                columns: new[] { "Id", "Amount", "IngredientId", "MeasurementUnit", "RecipeId" },
-                values: new object[,]
-                {
-                    { 1, 4.0, 9003, "Fruit", 1 },
-                    { 2, 1.0, 9004, "Serving", 1 }
-                });
+                columns: new[] { "Id", "Amount", "IngredientId", "IngredientNumber", "MeasurementUnit", "RecipeId" },
+                values: new object[] { 1, 4.0, null, 9003, "Fruit", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -436,6 +456,11 @@ namespace RecipeManager.Migrations
                 name: "IX_Favorites_UserProfileId",
                 table: "Favorites",
                 column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RecipeIngredients_IngredientId",
+                table: "RecipeIngredients",
+                column: "IngredientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeIngredients_RecipeId",
@@ -497,6 +522,9 @@ namespace RecipeManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "Recipes");
