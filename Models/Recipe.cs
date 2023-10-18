@@ -12,6 +12,8 @@ public class Recipe
     public string Name { get; set; }
     [Required]
     public string Instructions { get; set; }
+    [Required]
+    public string Tagline { get; set; }
     public string Image { get; set; }
     public List<RecipeIngredient> RecipeIngredients { get; set; }
 }

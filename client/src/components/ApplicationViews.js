@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import RecipeList from "./recipes/RecipeList";
 import MyRecipes from "./recipes/MyRecipes";
+import RecipeDetails from "./recipes/RecipeDetails";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -12,6 +13,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
         <Route
           index
           element={
+            // consider replacing home page with carousel of recently added recipes or most popular recipes
             <AuthorizedRoute loggedInUser={loggedInUser}>
               <RecipeList />
             </AuthorizedRoute>
@@ -25,6 +27,15 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
             </AuthorizedRoute>
           }
         />
+        <Route path="recipes">
+          <Route path=":recipeId"
+            element={
+              <AuthorizedRoute loggedInUser={loggedInUser}>
+                <RecipeDetails />
+              </AuthorizedRoute>
+            }
+          />
+        </Route>
         <Route
           path="login"
           element={<Login setLoggedInUser={setLoggedInUser} />}

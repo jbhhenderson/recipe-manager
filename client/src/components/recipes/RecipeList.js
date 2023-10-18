@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { getRecipes } from "../../managers/recipeManager";
-import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function RecipeList() {
     const [recipes, setRecipes] = useState([]);
+    const navigate = useNavigate();
 
     const getAllRecipes = () => {
         getRecipes().then(setRecipes);
+    };
+
+    const handleDetailsButton = (e, recipeId) => {
+        e.preventDefault();
+
+        navigate(`recipes/${recipeId}`)
     };
 
     useEffect(() => {
@@ -25,6 +33,8 @@ export default function RecipeList() {
                     <img
                         alt="Sample"
                         src={r.image}
+                        top
+                        width= '200rem'
                     />
                     <CardBody>
                         <CardTitle tag="h5">
@@ -37,9 +47,11 @@ export default function RecipeList() {
                             {r.dateCreated}
                         </CardSubtitle>
                         <CardText>
-                            {r.instructions}
+                            {r.tagline}
                         </CardText>
-                        <Button>
+                        <Button 
+                            onClick={(e) => handleDetailsButton(e, r.id)}
+                        >
                             Details
                         </Button>
                     </CardBody>

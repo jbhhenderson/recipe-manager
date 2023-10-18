@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMyRecipes } from "../../managers/recipeManager";
-import { Button, Card, CardBody, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
 
 export default function MyRecipes({loggedInUser}) {
     const [recipes, setRecipes] = useState([]);
@@ -9,12 +9,18 @@ export default function MyRecipes({loggedInUser}) {
         getMyRecipes(loggedInUser.id).then(setRecipes);
     };
 
+    const handleDetailsButton = (e, recipeId) => {
+        e.preventDefault();
+
+        window.location.href = `http://localhost:3000/recipes/${recipeId}`
+    };
+
     useEffect(() => {
         getAllMyRecipes();
     }, [])
 
     return (
-        <>
+        <CardGroup>
         {
             recipes.map((r) => {
                 return <Card
@@ -25,6 +31,8 @@ export default function MyRecipes({loggedInUser}) {
                     <img
                         alt="Sample"
                         src={r.image}
+                        top
+                        width= '200rem'
                     />
                     <CardBody>
                         <CardTitle tag="h5">
@@ -37,9 +45,11 @@ export default function MyRecipes({loggedInUser}) {
                             {r.dateCreated}
                         </CardSubtitle>
                         <CardText>
-                            {r.instructions}
+                            {r.tagline}
                         </CardText>
-                        <Button>
+                        <Button 
+                            onClick={(e) => handleDetailsButton(e, r.id)}
+                        >
                             Details
                         </Button>
                         <Button>
@@ -52,6 +62,6 @@ export default function MyRecipes({loggedInUser}) {
                 </Card>
             })
         }
-        </>
+        </CardGroup>
     )
 };

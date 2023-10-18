@@ -10,11 +10,6 @@ public class Ingredient
     public string Aisle { get; set; }
     [JsonPropertyName("image")]
     public string Image { get; set; }
-    // [JsonPropertyName("possibleUnits")]
-    // public List<string> PossibleUnits { get; set; }
+    [JsonPropertyName("possibleUnits")]
+    public List<string> PossibleUnits { get; set; }
 }
-
-// public class IngredientUnit
-// {
-//     public string Name { get; set; }
-// }
