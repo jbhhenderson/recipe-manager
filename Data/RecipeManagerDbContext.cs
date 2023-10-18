@@ -61,13 +61,13 @@ public class RecipeManagerDbContext : IdentityDbContext<IdentityUser>
             {
                 Id = 1,
                 UserProfileId = 1,
-                IngredientId = 9003
+                IngredientNumber = 9003
             },
             new()
             {
                 Id = 2,
                 UserProfileId = 1,
-                IngredientId = 9021
+                IngredientNumber = 9021
             }
         });
 
@@ -77,13 +77,13 @@ public class RecipeManagerDbContext : IdentityDbContext<IdentityUser>
             {
                 Id = 1,
                 UserProfileId = 1,
-                IngredientId = 10123
+                IngredientNumber = 10123
             },
             new()
             {
                 Id = 2,
                 UserProfileId = 1,
-                IngredientId = 18033
+                IngredientNumber = 18033
             }
         });
 

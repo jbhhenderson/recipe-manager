@@ -29,13 +29,18 @@ return (
             <Collapse isOpen={open} navbar>
             <Nav navbar>
                 <NavItem onClick={() => setOpen(false)}>
-                    <NavLink tag={RRNavLink} to="/">
+                    <NavLink tag={RRNavLink} to="/recipes">
                     All Recipes
                     </NavLink>
                 </NavItem>
                 <NavItem onClick={() => setOpen(false)}>
                     <NavLink tag={RRNavLink} to="/my-recipes">
                     My Recipes
+                    </NavLink>
+                </NavItem>
+                <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/my-pantry">
+                    My Pantry
                     </NavLink>
                 </NavItem>
             </Nav>

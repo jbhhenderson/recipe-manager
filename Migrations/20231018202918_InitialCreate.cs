@@ -224,11 +224,17 @@ namespace RecipeManager.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    IngredientId = table.Column<int>(type: "integer", nullable: false)
+                    IngredientNumber = table.Column<int>(type: "integer", nullable: false),
+                    IngredientId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ShoppingListItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingListItems_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ShoppingListItems_UserProfiles_UserProfileId",
                         column: x => x.UserProfileId,
@@ -244,11 +250,17 @@ namespace RecipeManager.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserProfileId = table.Column<int>(type: "integer", nullable: false),
-                    IngredientId = table.Column<int>(type: "integer", nullable: false)
+                    IngredientNumber = table.Column<int>(type: "integer", nullable: false),
+                    IngredientId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserPantryItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPantryItems_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_UserPantryItems_UserProfiles_UserProfileId",
                         column: x => x.UserProfileId,
@@ -341,12 +353,12 @@ namespace RecipeManager.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d3d1b4a0-6e8c-4e06-8598-207a222e210f", "Admin", "admin" });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "89203231-250a-4c9f-9969-3c0c81164d89", "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "9d4abad6-6d33-4deb-a2eb-78b33d0889bf", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAEHlXeQsYGeSNkoSxYoauquelZJdUUnu69KmZjzuXGFLMH4ZxW/J9g1KdWUbS0a0v8g==", null, false, "4cc45cef-d701-4ea6-a695-2bc1010964de", false, "Administrator" });
+                values: new object[] { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "67fbbab6-1282-4a7f-bb67-6f8e8c34e364", "admina@strator.comx", false, false, null, null, null, "AQAAAAEAACcQAAAAEGDW86+f91VjtOoDKhtcYrTzsrX8awop54gBvh68XOSFDu1hpOcmEf0MSUD0LY3v5A==", null, false, "673f1783-65e5-4b37-b84e-58915d6b0bda", false, "Administrator" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -369,20 +381,20 @@ namespace RecipeManager.Migrations
 
             migrationBuilder.InsertData(
                 table: "ShoppingListItems",
-                columns: new[] { "Id", "IngredientId", "UserProfileId" },
+                columns: new[] { "Id", "IngredientId", "IngredientNumber", "UserProfileId" },
                 values: new object[,]
                 {
-                    { 1, 10123, 1 },
-                    { 2, 18033, 1 }
+                    { 1, null, 10123, 1 },
+                    { 2, null, 18033, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserPantryItems",
-                columns: new[] { "Id", "IngredientId", "UserProfileId" },
+                columns: new[] { "Id", "IngredientId", "IngredientNumber", "UserProfileId" },
                 values: new object[,]
                 {
-                    { 1, 9003, 1 },
-                    { 2, 9021, 1 }
+                    { 1, null, 9003, 1 },
+                    { 2, null, 9021, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -473,9 +485,19 @@ namespace RecipeManager.Migrations
                 column: "UserProfileId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShoppingListItems_IngredientId",
+                table: "ShoppingListItems",
+                column: "IngredientId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShoppingListItems_UserProfileId",
                 table: "ShoppingListItems",
                 column: "UserProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPantryItems_IngredientId",
+                table: "UserPantryItems",
+                column: "IngredientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserPantryItems_UserProfileId",
@@ -524,10 +546,10 @@ namespace RecipeManager.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Ingredients");
+                name: "Recipes");
 
             migrationBuilder.DropTable(
-                name: "Recipes");
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "UserProfiles");
