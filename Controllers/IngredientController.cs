@@ -38,4 +38,20 @@ public class IngredientController : ControllerBase
 
         return Ok(foundUserPantryIngredients);
     }
+    
+    [HttpGet("shopping-list/{userId}")]
+    public async Task<IActionResult> GetShoppingListByUserId(int userId)
+    {
+        var foundUserShoppingListIngredients = _dbContext.ShoppingListItems.Where(sli => sli.UserProfileId == userId);
+
+        foreach (ShoppingListItem sli in foundUserShoppingListIngredients)
+        {
+            Ingredient foundIngredient = await _ingredientService.GetById(sli.IngredientNumber);
+            sli.Ingredient = foundIngredient;
+        }
+
+        foundUserShoppingListIngredients.OrderBy(i => i.Ingredient.Aisle);
+
+        return Ok(foundUserShoppingListIngredients);
+    }
 }

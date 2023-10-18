@@ -7,3 +7,7 @@ export const getIngredientById = async (id) => {
 export const getPantryIngredientsByUserId = async (userId) => {
     return await fetch(`${_apiUrl}/pantry/${userId}`).then((res) => res.json());
 };
+
+export const getShoppingListIngredientsByUserId = async (userId) => {
+    return await fetch(`${_apiUrl}/shopping-list/${userId}`).then((res) => res.json());
+};

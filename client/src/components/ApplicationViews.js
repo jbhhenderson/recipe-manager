@@ -6,6 +6,7 @@ import RecipeList from "./recipes/RecipeList";
 import MyRecipes from "./recipes/MyRecipes";
 import RecipeDetails from "./recipes/RecipeDetails";
 import PantryList from "./pantry/PantryList";
+import ShoppingList from "./shopping/ShoppingList";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -52,6 +53,16 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
             element={
               <AuthorizedRoute loggedInUser={loggedInUser}>
                 <PantryList loggedInUser={loggedInUser} />
+              </AuthorizedRoute>
+            }
+          />
+        </Route>
+        <Route path="my-shopping-list">
+          <Route
+            index 
+            element={
+              <AuthorizedRoute loggedInUser={loggedInUser}>
+                <ShoppingList loggedInUser={loggedInUser} />
               </AuthorizedRoute>
             }
           />
