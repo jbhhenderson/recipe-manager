@@ -13,7 +13,7 @@ using RecipeManager.Data;
 namespace RecipeManager.Migrations
 {
     [DbContext(typeof(RecipeManagerDbContext))]
-    [Migration("20231018152022_InitialCreate")]
+    [Migration("20231018202918_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,7 @@ namespace RecipeManager.Migrations
                         new
                         {
                             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                            ConcurrencyStamp = "d3d1b4a0-6e8c-4e06-8598-207a222e210f",
+                            ConcurrencyStamp = "89203231-250a-4c9f-9969-3c0c81164d89",
                             Name = "Admin",
                             NormalizedName = "admin"
                         });
@@ -178,13 +178,13 @@ namespace RecipeManager.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9d4abad6-6d33-4deb-a2eb-78b33d0889bf",
+                            ConcurrencyStamp = "67fbbab6-1282-4a7f-bb67-6f8e8c34e364",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEHlXeQsYGeSNkoSxYoauquelZJdUUnu69KmZjzuXGFLMH4ZxW/J9g1KdWUbS0a0v8g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGDW86+f91VjtOoDKhtcYrTzsrX8awop54gBvh68XOSFDu1hpOcmEf0MSUD0LY3v5A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4cc45cef-d701-4ea6-a695-2bc1010964de",
+                            SecurityStamp = "673f1783-65e5-4b37-b84e-58915d6b0bda",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -454,13 +454,18 @@ namespace RecipeManager.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IngredientId")
+                    b.Property<int?>("IngredientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IngredientNumber")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserProfileId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
 
                     b.HasIndex("UserProfileId");
 
@@ -470,13 +475,13 @@ namespace RecipeManager.Migrations
                         new
                         {
                             Id = 1,
-                            IngredientId = 10123,
+                            IngredientNumber = 10123,
                             UserProfileId = 1
                         },
                         new
                         {
                             Id = 2,
-                            IngredientId = 18033,
+                            IngredientNumber = 18033,
                             UserProfileId = 1
                         });
                 });
@@ -489,13 +494,18 @@ namespace RecipeManager.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IngredientId")
+                    b.Property<int?>("IngredientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("IngredientNumber")
                         .HasColumnType("integer");
 
                     b.Property<int>("UserProfileId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
 
                     b.HasIndex("UserProfileId");
 
@@ -505,13 +515,13 @@ namespace RecipeManager.Migrations
                         new
                         {
                             Id = 1,
-                            IngredientId = 9003,
+                            IngredientNumber = 9003,
                             UserProfileId = 1
                         },
                         new
                         {
                             Id = 2,
-                            IngredientId = 9021,
+                            IngredientNumber = 9021,
                             UserProfileId = 1
                         });
                 });
@@ -672,22 +682,34 @@ namespace RecipeManager.Migrations
 
             modelBuilder.Entity("RecipeManager.Models.ShoppingListItem", b =>
                 {
+                    b.HasOne("Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId");
+
                     b.HasOne("RecipeManager.Models.UserProfile", "UserProfile")
                         .WithMany("ShoppingListItems")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Ingredient");
+
                     b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("RecipeManager.Models.UserPantryItem", b =>
                 {
+                    b.HasOne("Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId");
+
                     b.HasOne("RecipeManager.Models.UserProfile", "UserProfile")
                         .WithMany("UserPantryItems")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Ingredient");
 
                     b.Navigation("UserProfile");
                 });

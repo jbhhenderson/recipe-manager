@@ -14,7 +14,7 @@ export default function RecipeList() {
     const handleDetailsButton = (e, recipeId) => {
         e.preventDefault();
 
-        navigate(`recipes/${recipeId}`)
+        navigate(`${recipeId}`)
     };
 
     useEffect(() => {
