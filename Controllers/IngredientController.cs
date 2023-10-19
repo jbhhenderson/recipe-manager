@@ -54,4 +54,12 @@ public class IngredientController : ControllerBase
 
         return Ok(foundUserShoppingListIngredients);
     }
+
+    [HttpGet("search-ingredients/{ingredientName}")]
+    public async Task<IActionResult> GetSearchResults(string ingredientName)
+    {
+        Object searchResult = await _ingredientService.SearchIngredients(ingredientName);
+
+        return Ok(searchResult);
+    }
 }
