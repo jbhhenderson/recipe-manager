@@ -22,4 +22,13 @@ public class SpoonacularAPIService
 
         return foundIngredient;
     }
+
+    public async Task<Object> SearchIngredients(string ingredientName)
+    {
+        var uri = $"https://api.spoonacular.com/food/ingredients/search?apiKey={_configuration["spoonAPIKey"]}&query={ingredientName}&number=5";
+
+        var searchResults = await _client.GetFromJsonAsync<Object>(uri);
+
+        return searchResults;
+    }
 }

@@ -15,3 +15,19 @@ export const getMyFavoriteRecipes = (userId) => {
 export const getRecipeById = async (id) => {
     return await fetch(`${_apiUrl}/${id}`).then((res) => res.json());
 };
+
+export const createRecipe = (recipe) => {
+    return fetch(`${_apiUrl}`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(recipe)
+    }).then((res) => res.json())
+};
+
+export const createRecipeIngredient = (recipeIngredient) => {
+    return fetch(`${_apiUrl}/recipe-ingredient`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(recipeIngredient)
+    }).then((res) => res.json())
+};

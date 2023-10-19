@@ -37,7 +37,7 @@ export default function RecipeDetails() {
       {/* <CardGroup> */}
         {
             recipe?.recipeIngredients?.map((ri) => {
-                const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_100x100/" + ri.ingredient.image
+                const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + ri.ingredient.image
                 const ingredientName = ri.ingredient.name.charAt(0).toUpperCase() + ri.ingredient.name.slice(1)
                 const ingredientAmount = ri.amount
                 const ingredientUnit = ri.measurementUnit
@@ -46,7 +46,7 @@ export default function RecipeDetails() {
                         alt="Card image"
                         src={ingredientImageLink}
                         style={{alignSelf: "center"}}
-                        //object fit cover
+                        //object fit cover?
                         //object position?
                         width="100px"
                         height="100px"

@@ -67,4 +67,26 @@ public class RecipeController : ControllerBase
 
         return Ok(foundRecipe);
     }
+
+    [HttpPost]
+    [Authorize]
+    public IActionResult CreateRecipe(Recipe recipe) 
+    {
+        recipe.DateCreated = DateTime.Now;
+
+        _dbContext.Recipes.Add(recipe);
+        _dbContext.SaveChanges();
+
+        return Created($"/api/recipe/{recipe.Id}", recipe);
+    }
+
+    [HttpPost("recipe-ingredient")]
+    [Authorize]
+    public IActionResult CreateRecipeIngredient(RecipeIngredient recipeIngredient)
+    {
+        _dbContext.RecipeIngredients.Add(recipeIngredient);
+        _dbContext.SaveChanges();
+
+        return Created($"/api/recipe-ingredient/{recipeIngredient.Id}", recipeIngredient);
+    }
 }
