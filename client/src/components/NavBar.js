@@ -39,6 +39,11 @@ return (
                     </NavLink>
                 </NavItem>
                 <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/recipes/favorites">
+                    Favorite Recipes
+                    </NavLink>
+                </NavItem>
+                <NavItem onClick={() => setOpen(false)}>
                     <NavLink tag={RRNavLink} to="/my-pantry">
                     My Pantry
                     </NavLink>
