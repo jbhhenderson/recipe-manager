@@ -35,6 +35,17 @@ public class RecipeController : ControllerBase
             .Where(r => r.UserProfileId == userId)
             .OrderByDescending(r => r.DateCreated));
     }
+    
+    [HttpGet("favorites/{userId}")]
+    [Authorize]
+    public IActionResult GetMyFavoriteRecipes(int userId)
+    {
+        return Ok(_dbContext
+            .Favorites
+            .Include(f => f.Recipe)
+            .Where(f => f.UserProfileId == userId)
+            .OrderByDescending(f => f.Recipe.DateCreated));
+    }
 
     [HttpGet("{id}")]
     [Authorize]
