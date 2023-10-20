@@ -7,10 +7,6 @@ export default function PantryList({ loggedInUser }) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-
-    useEffect(() => {
-        getMyPantry();
-    }, []);
     
     const getMyPantry = () => {
         getPantryIngredientsByUserId(loggedInUser.id).then(setPantryIngredients);
@@ -45,6 +41,10 @@ export default function PantryList({ loggedInUser }) {
         removePantryItem(userPantryIngredientId)
             .then(() => getMyPantry())
     }
+
+    useEffect(() => {
+        getMyPantry();
+    }, []);
 
     return (
         <div>

@@ -83,6 +83,16 @@ public class IngredientController : ControllerBase
         return Ok(foundUserShoppingListIngredients);
     }
 
+    [HttpPost("shopping-list")]
+    [Authorize]
+    public IActionResult AddShoppingListItem(ShoppingListItem shoppingListItem)
+    {
+        _dbContext.ShoppingListItems.Add(shoppingListItem);
+        _dbContext.SaveChanges();
+
+        return Created($"/api/pantry/{shoppingListItem.UserProfileId}/{shoppingListItem.IngredientNumber}", shoppingListItem);
+    }
+
     [HttpGet("search-ingredients/{ingredientName}")]
     public async Task<IActionResult> GetSearchResults(string ingredientName)
     {
