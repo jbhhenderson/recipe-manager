@@ -34,6 +34,12 @@ export const addShoppingListIngredient = (shoppingListIngredient) => {
     }).then((res) => res.json())
 }
 
+export const removeShoppingListItem = (shoppingListItemId) => {
+    return fetch(`${_apiUrl}/shopping-list/${shoppingListItemId}`, {
+        method: "DELETE"
+    })
+}
+
 export const searchIngredients = async (ingredientName) => {
     return await fetch(`${_apiUrl}/search-ingredients/${ingredientName}`).then((res) => res.json());
 };

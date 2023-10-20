@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { addShoppingListIngredient, getShoppingListIngredientsByUserId, searchIngredients } from "../../managers/ingredientManager"
+import { addShoppingListIngredient, getShoppingListIngredientsByUserId, removeShoppingListItem, searchIngredients } from "../../managers/ingredientManager"
 import { Button, Card, CardBody, CardSubtitle, CardTitle, Input, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap"
 
 export default function ShoppingList({ loggedInUser }) {
@@ -34,6 +34,13 @@ export default function ShoppingList({ loggedInUser }) {
         addShoppingListIngredient(ingredientToSendToAPI)
             .then(() => getMyShoppingList());
     };
+
+    const handleRemoveIngredient = (e, shoppingListIngredientId) => {
+        e.preventDefault();
+
+        removeShoppingListItem(shoppingListIngredientId)
+            .then(() => getMyShoppingList())
+    }
 
     useEffect(() => {
         getMyShoppingList()
@@ -70,6 +77,12 @@ export default function ShoppingList({ loggedInUser }) {
                     >
                         {sli.ingredient.aisle}
                     </CardSubtitle>
+                    <Button
+                        color="danger"
+                        onClick={(e) => handleRemoveIngredient(e, sli.id)}
+                    >
+                        Remove Ingredient
+                    </Button>
                 </CardBody>
             </Card>
             })

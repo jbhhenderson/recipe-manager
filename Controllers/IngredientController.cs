@@ -93,6 +93,23 @@ public class IngredientController : ControllerBase
         return Created($"/api/pantry/{shoppingListItem.UserProfileId}/{shoppingListItem.IngredientNumber}", shoppingListItem);
     }
 
+    [HttpDelete("shopping-list/{id}")]
+    [Authorize]
+    public IActionResult RemoveShoppingListItem(int id)
+    {
+        ShoppingListItem foundItem = _dbContext.ShoppingListItems.SingleOrDefault(sli => sli.Id == id);
+
+        if (foundItem == null)
+        {
+            return BadRequest();
+        }
+
+        _dbContext.ShoppingListItems.Remove(foundItem);
+        _dbContext.SaveChanges();
+
+        return NoContent();
+    }
+
     [HttpGet("search-ingredients/{ingredientName}")]
     public async Task<IActionResult> GetSearchResults(string ingredientName)
     {
