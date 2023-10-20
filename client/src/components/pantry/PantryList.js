@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react"
-import { addPantryIngredient, getPantryIngredientsByUserId, searchIngredients } from "../../managers/ingredientManager"
+import { addPantryIngredient, getPantryIngredientsByUserId, removePantryItem, searchIngredients } from "../../managers/ingredientManager"
 import { Button, Card, CardBody, CardSubtitle, CardTitle, Input, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap"
 
 export default function PantryList({ loggedInUser }) {
-    const [pantryIngredients, setPantryIngredients] = useState([])
+    const [pantryIngredients, setPantryIngredients] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
     useEffect(() => {
-        getMyPantry()
-    }, [])
+        getMyPantry();
+    }, []);
     
     const getMyPantry = () => {
-        getPantryIngredientsByUserId(loggedInUser.id).then(setPantryIngredients)
-    }
+        getPantryIngredientsByUserId(loggedInUser.id).then(setPantryIngredients);
+    };
 
     const toggleOffcanvas = () => {
         setIsOpen(!isOpen);
@@ -24,7 +24,7 @@ export default function PantryList({ loggedInUser }) {
         e.preventDefault();
 
         searchIngredients(searchTerm)
-            .then((res) => setSearchResults(res.results))
+            .then((res) => setSearchResults(res.results));
     };
 
     const handleAddIngredient = (e, ingredientId) => {
@@ -33,11 +33,18 @@ export default function PantryList({ loggedInUser }) {
         const ingredientToSendToAPI = {
             ingredientNumber: ingredientId,
             userProfileId: loggedInUser.id
-        }
+        };
 
         addPantryIngredient(ingredientToSendToAPI)
-            .then(() => getMyPantry())
+            .then(() => getMyPantry());
     };
+
+    const handleRemoveIngredient = (e, userPantryIngredientId) => {
+        e.preventDefault();
+
+        removePantryItem(userPantryIngredientId)
+            .then(() => getMyPantry())
+    }
 
     return (
         <div>
@@ -70,6 +77,12 @@ export default function PantryList({ loggedInUser }) {
                     >
                         {pi.ingredient.aisle}
                     </CardSubtitle>
+                    <Button
+                        color="danger"
+                        onClick={(e) => handleRemoveIngredient(e, pi.id)}
+                    >
+                        Remove Ingredient
+                    </Button>
                 </CardBody>
             </Card>
             })

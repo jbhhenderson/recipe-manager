@@ -16,6 +16,12 @@ export const addPantryIngredient = (userPantryItem) => {
     }).then((res) => res.json())
 }
 
+export const removePantryItem = (userPantryItemId) => {
+    return fetch(`${_apiUrl}/pantry/${userPantryItemId}`, {
+        method: "DELETE"
+    })
+}
+
 export const getShoppingListIngredientsByUserId = async (userId) => {
     return await fetch(`${_apiUrl}/shopping-list/${userId}`).then((res) => res.json());
 };
