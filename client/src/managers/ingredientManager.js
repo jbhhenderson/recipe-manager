@@ -26,6 +26,14 @@ export const getShoppingListIngredientsByUserId = async (userId) => {
     return await fetch(`${_apiUrl}/shopping-list/${userId}`).then((res) => res.json());
 };
 
+export const addShoppingListIngredient = (shoppingListIngredient) => {
+    return fetch(`${_apiUrl}/shopping-list`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(shoppingListIngredient)
+    }).then((res) => res.json())
+}
+
 export const searchIngredients = async (ingredientName) => {
     return await fetch(`${_apiUrl}/search-ingredients/${ingredientName}`).then((res) => res.json());
 };
