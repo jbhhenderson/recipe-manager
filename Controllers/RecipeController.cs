@@ -104,4 +104,51 @@ public class RecipeController : ControllerBase
 
         return Created($"/api/recipe-ingredient/{recipeIngredient.Id}", recipeIngredient);
     }
+
+    [HttpPost("user/{userId}/favorite/recipe/{recipeId}")]
+    [Authorize]
+    public IActionResult AddFavoriteRecipe(int userId, int recipeId)
+    {
+        Favorite favorite = new() {
+            RecipeId = recipeId,
+            UserProfileId = userId
+        };
+        _dbContext.Favorites.Add(favorite);
+        _dbContext.SaveChanges();
+
+        return Created($"/api/recipe/favorite/{favorite.Id}", favorite);
+    }
+
+    [HttpDelete("user/{userId}/favorite/recipe/{recipeId}")]
+    [Authorize]
+    public IActionResult RemoveFavoriteRecipe(int userId, int recipeId)
+    {
+        Favorite foundFavorite = _dbContext.Favorites.SingleOrDefault(f => f.RecipeId == recipeId && f.UserProfileId == userId);
+
+        if (foundFavorite == null) 
+        {
+            return BadRequest();
+        }
+
+        _dbContext.Favorites.Remove(foundFavorite);
+        _dbContext.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpGet("user/{userId}/recipe/{recipeId}/is-favorite")]
+    [Authorize]
+    public IActionResult CheckFavoriteStatus(int userId, int recipeId)
+    {
+        Favorite foundFavorite = _dbContext.Favorites.SingleOrDefault(f => f.RecipeId == recipeId && f.UserProfileId == userId);
+
+        if (foundFavorite == null)
+        {
+            return Ok(false);
+        }
+        else
+        {
+            return Ok(true);
+        }
+    }
 }

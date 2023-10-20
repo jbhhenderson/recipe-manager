@@ -31,3 +31,19 @@ export const createRecipeIngredient = (recipeIngredient) => {
         body: JSON.stringify(recipeIngredient)
     }).then((res) => res.json())
 };
+
+export const addFavorite = (userId, recipeId) => {
+    return fetch(`${_apiUrl}/user/${userId}/favorite/recipe/${recipeId}`, {
+        method: "POST"
+    }).then((res) => res.json())
+}
+
+export const removeFavorite = (userId, recipeId) => {
+    return fetch(`${_apiUrl}/user/${userId}/favorite/recipe/${recipeId}`, {
+        method: "DELETE"
+    })
+}
+
+export const getFavoriteStatus = (userId, recipeId) => {
+    return fetch(`${_apiUrl}/user/${userId}/recipe/${recipeId}/is-favorite`).then((res) => res.json())
+}
