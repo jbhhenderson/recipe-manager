@@ -22,8 +22,23 @@ public class RecipeController : ControllerBase
     [HttpGet]
     [Authorize]
     public IActionResult Get()
+    // public async Task<IActionResult> Get()
     {
-        return Ok(_dbContext.Recipes.OrderByDescending(r => r.DateCreated));
+        List<Recipe> allRecipes = _dbContext.Recipes.OrderByDescending(r => r.DateCreated).ToList();
+        // List<Recipe> allRecipes = _dbContext.Recipes
+        // .Include(r => r.RecipeIngredients)
+        // .OrderByDescending(r => r.DateCreated).ToList();
+
+        // foreach (Recipe recipe in allRecipes)
+        // {
+        //     foreach(RecipeIngredient recipeIngredient in recipe.RecipeIngredients)
+        //     {
+        //         Ingredient foundIngredient = await _ingredientService.GetById(recipeIngredient.IngredientNumber);
+        //         recipeIngredient.Ingredient = foundIngredient;            
+        //     }
+        // }
+
+        return Ok(allRecipes);
     }
 
     [HttpGet("my-recipes/{userId}")]
