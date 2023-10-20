@@ -48,8 +48,6 @@ export default function RecipeForm({ loggedInUser }) {
             let clone = structuredClone(stagedRecipeIngredients);
             let foundIngredient = clone.find((si) => si.id === sri.id);
             foundIngredient.assignedAmount = e.target.value;
-            clone = clone.filter((si) => si.id !== sri.id);
-            clone.push(foundIngredient);
             setStagedRecipeIngredients(clone);
         }
         else if (e.target.name === "measurementUnit")
@@ -57,8 +55,6 @@ export default function RecipeForm({ loggedInUser }) {
             let clone = structuredClone(stagedRecipeIngredients);
             let foundIngredient = clone.find((si) => si.id === sri.id);
             foundIngredient.assignedUnit = e.target.value;
-            clone = clone.filter((si) => si.id !== sri.id);
-            clone.push(foundIngredient);
             setStagedRecipeIngredients(clone);
         }
     };
@@ -89,7 +85,7 @@ export default function RecipeForm({ loggedInUser }) {
 
     const toggleOffcanvas = () => {
         setIsOpen(!isOpen);
-      };
+    };
 
     return (
         <>
