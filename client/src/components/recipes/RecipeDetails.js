@@ -1,19 +1,39 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getRecipeById } from "../../managers/recipeManager";
-import { Card, CardBody, CardGroup, CardImg, CardText, CardTitle } from "reactstrap";
+import { addFavorite, getFavoriteStatus, getRecipeById, removeFavorite } from "../../managers/recipeManager";
+import { Button, Card, CardBody, CardGroup, CardImg, CardText, CardTitle } from "reactstrap";
 import { getIngredientById } from "../../managers/ingredientManager";
 
-export default function RecipeDetails() {
+export default function RecipeDetails({ loggedInUser }) {
     const [recipe, setRecipe] = useState([]);
+    const [favoriteStatus, setFavoriteStatus] = useState(false);
     const { recipeId } = useParams();
 
     const getThisRecipe = () => {
         getRecipeById(parseInt(recipeId)).then(setRecipe)
     };
 
+    const getRecipeFavoriteStatus = () => {
+      getFavoriteStatus(loggedInUser.id, recipeId).then(setFavoriteStatus)
+    }
+
+    const handleAddFavorite = (e) => {
+      e.preventDefault();
+
+      addFavorite(loggedInUser.id, recipeId)
+        .then(() => getRecipeFavoriteStatus())
+    }
+    
+    const handleRemoveFavorite = (e) => {
+      e.preventDefault();
+
+      removeFavorite(loggedInUser.id, recipeId)
+        .then(() => getRecipeFavoriteStatus())
+    }
+
     useEffect(() => {
         getThisRecipe();
+        getRecipeFavoriteStatus();
     }, []);
 
     return <Card className="my-2">
@@ -65,6 +85,11 @@ export default function RecipeDetails() {
       {/* </CardGroup> */}
       <CardText>
         Created By: {recipe?.userProfile?.firstName} {recipe?.userProfile?.lastName} On {recipe.dateCreated}
+        {
+          favoriteStatus === true
+          ? <Button color="danger" onClick={handleRemoveFavorite}> Unfavorite </Button>
+          : <Button color="success" onClick={handleAddFavorite}> Favorite </Button>
+        }
       </CardText>
       <CardText>
         <small className="text-muted">

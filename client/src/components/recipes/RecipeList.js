@@ -63,7 +63,7 @@ export default function RecipeList() {
                         </Button>
                     </CardBody>
                 </Card>
-                // } else if (searchTerm !== "" && (r.name.toLowerCase().includes(searchTerm.toLowerCase()) || r.recipeIngredients.some(ingredient => ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())))) {
+                // } else if (searchTerm !== "" && (r.name.toLowerCase().includes(searchTerm.toLowerCase()) || r.recipeIngredients.some(ri => ri.ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())))) {
                 } else if (searchTerm !== "" && r.name.toLowerCase().includes(searchTerm.toLowerCase())) {
                     return <Card
                     style={{

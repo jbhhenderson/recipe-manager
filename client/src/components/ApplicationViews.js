@@ -52,7 +52,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           <Route path=":recipeId"
             element={
               <AuthorizedRoute loggedInUser={loggedInUser}>
-                <RecipeDetails />
+                <RecipeDetails loggedInUser={loggedInUser}/>
               </AuthorizedRoute>
             }
           />
