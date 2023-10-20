@@ -24,6 +24,12 @@ export const createRecipe = (recipe) => {
     }).then((res) => res.json())
 };
 
+export const deleteRecipe = (recipeId) => {
+    return fetch(`${_apiUrl}/${recipeId}`, {
+        method: "DELETE"
+    })
+};
+
 export const createRecipeIngredient = (recipeIngredient) => {
     return fetch(`${_apiUrl}/recipe-ingredient`, {
         method: "POST",
