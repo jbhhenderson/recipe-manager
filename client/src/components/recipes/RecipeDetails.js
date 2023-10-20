@@ -3,11 +3,18 @@ import { useParams } from "react-router-dom";
 import { addFavorite, getFavoriteStatus, getRecipeById, removeFavorite } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardImg, CardText, CardTitle } from "reactstrap";
 import { getIngredientById } from "../../managers/ingredientManager";
+import CommentList from "../comments/CommentList";
+import { getRecipeComments } from "../../managers/commentManager";
 
 export default function RecipeDetails({ loggedInUser }) {
     const [recipe, setRecipe] = useState([]);
     const [favoriteStatus, setFavoriteStatus] = useState(false);
     const { recipeId } = useParams();
+    const [comments, setComments] = useState([]);
+
+    const getThisRecipesComments = () => {
+        getRecipeComments(recipeId).then(setComments);
+    };
 
     const getThisRecipe = () => {
         getRecipeById(parseInt(recipeId)).then(setRecipe)
@@ -34,6 +41,7 @@ export default function RecipeDetails({ loggedInUser }) {
     useEffect(() => {
         getThisRecipe();
         getRecipeFavoriteStatus();
+        getThisRecipesComments();
     }, []);
 
     return <Card className="my-2">
@@ -97,5 +105,6 @@ export default function RecipeDetails({ loggedInUser }) {
         </small>
       </CardText>
     </CardBody>
+    <CommentList loggedInUser={loggedInUser} recipeId={recipe.id} comments={comments} getThisRecipesComments={getThisRecipesComments}/>
   </Card>
 }
