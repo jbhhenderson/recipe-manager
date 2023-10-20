@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMyRecipes } from "../../managers/recipeManager";
+import { deleteRecipe, getMyRecipes } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
 
 export default function MyRecipes({loggedInUser}) {
@@ -13,6 +13,13 @@ export default function MyRecipes({loggedInUser}) {
         e.preventDefault();
 
         window.location.href = `http://localhost:3000/recipes/${recipeId}`
+    };
+
+    const handleDeleteButton = (e, recipeId) => {
+        e.preventDefault();
+
+        deleteRecipe(recipeId)
+            .then(() => getAllMyRecipes())
     };
 
     useEffect(() => {
@@ -48,6 +55,7 @@ export default function MyRecipes({loggedInUser}) {
                             {r.tagline}
                         </CardText>
                         <Button 
+                            color="primary"
                             onClick={(e) => handleDetailsButton(e, r.id)}
                         >
                             Details
@@ -55,7 +63,10 @@ export default function MyRecipes({loggedInUser}) {
                         <Button>
                             Edit
                         </Button>
-                        <Button>
+                        <Button
+                            color="danger"
+                            onClick={(e) => handleDeleteButton(e, r.id)}
+                        >
                             Delete
                         </Button>
                     </CardBody>

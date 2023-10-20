@@ -95,6 +95,18 @@ public class RecipeController : ControllerBase
         return Created($"/api/recipe/{recipe.Id}", recipe);
     }
 
+    [HttpDelete("{recipeId}")]
+    [Authorize]
+    public IActionResult DeleteRecipe(int recipeId)
+    {
+        Recipe foundRecipe = _dbContext.Recipes.SingleOrDefault(r => r.Id == recipeId);
+
+        _dbContext.Remove(foundRecipe);
+        _dbContext.SaveChanges();
+
+        return NoContent();
+    }
+
     [HttpPost("recipe-ingredient")]
     [Authorize]
     public IActionResult CreateRecipeIngredient(RecipeIngredient recipeIngredient)
