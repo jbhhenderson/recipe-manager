@@ -8,6 +8,14 @@ export const getPantryIngredientsByUserId = async (userId) => {
     return await fetch(`${_apiUrl}/pantry/${userId}`).then((res) => res.json());
 };
 
+export const addPantryIngredient = (userPantryItem) => {
+    return fetch(`${_apiUrl}/pantry`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(userPantryItem)
+    }).then((res) => res.json())
+}
+
 export const getShoppingListIngredientsByUserId = async (userId) => {
     return await fetch(`${_apiUrl}/shopping-list/${userId}`).then((res) => res.json());
 };

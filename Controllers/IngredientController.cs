@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RecipeManager.Data;
 using RecipeManager.Models;
@@ -37,6 +38,16 @@ public class IngredientController : ControllerBase
         foundUserPantryIngredients.OrderBy(i => i.Ingredient.Aisle);
 
         return Ok(foundUserPantryIngredients);
+    }
+
+    [HttpPost("pantry")]
+    [Authorize]
+    public IActionResult AddPantryItem(UserPantryItem userPantryItem)
+    {
+        _dbContext.UserPantryItems.Add(userPantryItem);
+        _dbContext.SaveChanges();
+
+        return Created($"/api/pantry/{userPantryItem.UserProfileId}/{userPantryItem.IngredientNumber}", userPantryItem);
     }
     
     [HttpGet("shopping-list/{userId}")]
