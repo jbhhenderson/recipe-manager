@@ -9,6 +9,7 @@ import PantryList from "./pantry/PantryList";
 import ShoppingList from "./shopping/ShoppingList";
 import MyFavoriteRecipes from "./recipes/Favorites";
 import RecipeForm from "./recipes/RecipeForm";
+import EditRecipe from "./recipes/EditRecipe";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -60,6 +61,13 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
             element={
               <AuthorizedRoute loggedInUser={loggedInUser}>
                 <MyFavoriteRecipes loggedInUser={loggedInUser}/>
+              </AuthorizedRoute>
+            }
+          />
+          <Route path="edit/:recipeId"
+            element={
+              <AuthorizedRoute loggedInUser={loggedInUser}>
+                <EditRecipe loggedInUser={loggedInUser} />
               </AuthorizedRoute>
             }
           />

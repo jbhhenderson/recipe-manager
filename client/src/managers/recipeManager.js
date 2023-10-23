@@ -30,6 +30,14 @@ export const deleteRecipe = (recipeId) => {
     })
 };
 
+export const updateRecipe = (recipe) => {
+    return fetch(`${_apiUrl}/${recipe.id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(recipe)
+    })
+};
+
 export const createRecipeIngredient = (recipeIngredient) => {
     return fetch(`${_apiUrl}/recipe-ingredient`, {
         method: "POST",

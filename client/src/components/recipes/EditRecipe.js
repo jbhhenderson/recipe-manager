@@ -1,21 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, CardBody, CardTitle, Form, FormGroup, Input, Label, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap";
 import { getIngredientById, searchIngredients } from "../../managers/ingredientManager";
-import { createRecipe, createRecipeIngredient } from "../../managers/recipeManager";
-import { useNavigate } from "react-router-dom";
+import { createRecipe, createRecipeIngredient, getRecipeById, updateRecipe } from "../../managers/recipeManager";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function RecipeForm({ loggedInUser }) {
-    const [newRecipe, setNewRecipe] = useState({
-        name: "",
-        instructions: "",
-        tagline: "",
-        image: ""
-    });
+export default function EditRecipe({ loggedInUser }) {
+    const [newRecipe, setNewRecipe] = useState({});
     const [stagedRecipeIngredients, setStagedRecipeIngredients] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
+    const { recipeId } = useParams();
 
     const handleRecipeChange = (e) => {
         setNewRecipe({
@@ -36,7 +32,16 @@ export default function RecipeForm({ loggedInUser }) {
 
         getIngredientById(ingredientId)
             .then((res) => {
-                const stagedIngredient = res;
+                const stagedIngredient = {
+                    id: res.id,
+                    name: res.name,
+                    recipeId: parseInt(recipeId),
+                    aisle: res.aisle,
+                    image: res.image,
+                    possibleUnits: res.possibleUnits,
+                    amount: 0,
+                    measurementUnit: ""
+                };
                 const clone = structuredClone(stagedRecipeIngredients);
                 clone.push(stagedIngredient)
                 setStagedRecipeIngredients(clone)        
@@ -56,14 +61,14 @@ export default function RecipeForm({ loggedInUser }) {
         {
             let clone = structuredClone(stagedRecipeIngredients);
             let foundIngredient = clone.find((si) => si.id === sri.id);
-            foundIngredient.assignedAmount = e.target.value;
+            foundIngredient.amount = parseInt(e.target.value);
             setStagedRecipeIngredients(clone);
         }
         else if (e.target.name === "measurementUnit")
         {
             let clone = structuredClone(stagedRecipeIngredients);
             let foundIngredient = clone.find((si) => si.id === sri.id);
-            foundIngredient.assignedUnit = e.target.value;
+            foundIngredient.measurementUnit = e.target.value;
             setStagedRecipeIngredients(clone);
         }
     };
@@ -71,54 +76,84 @@ export default function RecipeForm({ loggedInUser }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const recipeToSendToAPI = newRecipe;
+        const recipeToSendToAPI = {
+            id: newRecipe.id,
+            userProfileId: newRecipe.userProfileId,
+            dateCreated: newRecipe.dateCreated,
+            name: newRecipe.name,
+            instructions: newRecipe.instructions,
+            tagline: newRecipe.tagline,
+            image: newRecipe.image,
+            recipeIngredients: []
+        }
 
-        recipeToSendToAPI.userProfileId = loggedInUser.id;
+        for (const sri of stagedRecipeIngredients) {
+            const recipeIngredient = {
+                recipeId: parseInt(recipeId),
+                ingredientNumber: parseInt(sri.id),
+                amount: parseInt(sri.amount),
+                measurementUnit: sri.measurementUnit
+            }
 
-        createRecipe(recipeToSendToAPI)
-            .then((res) => {
-                for (const sri of stagedRecipeIngredients) {
-                    const sriToSendToAPI = {
-                        recipeId: res.id,
-                        ingredientNumber: sri.id,
-                        amount: sri.assignedAmount,
-                        measurementUnit: sri.assignedUnit
-                    }
+            recipeToSendToAPI.recipeIngredients.push(recipeIngredient)
+        }
 
-                    createRecipeIngredient(sriToSendToAPI)
-                }
-                navigate(`/recipes/${res.id}`)
-            })
+        updateRecipe(recipeToSendToAPI)
+            .then(() => navigate(`/recipes/${recipeToSendToAPI.id}`))
     };
 
     const toggleOffcanvas = () => {
         setIsOpen(!isOpen);
     };
 
+    const getThisRecipe = () => {
+        getRecipeById(recipeId).then((res) => {
+            setNewRecipe(res)
+            const recipeIngredients = res.recipeIngredients
+            const ingredientArray = []
+            for (const ri of recipeIngredients) {
+                const stagedIngredient = ri.ingredient
+                stagedIngredient.amount = ri.amount
+                stagedIngredient.measurementUnit = ri.measurementUnit
+                
+                ingredientArray.push(stagedIngredient)
+            }
+            setStagedRecipeIngredients(ingredientArray)
+        })
+    };
+
+    useEffect(() => {
+        getThisRecipe();
+    }, []);
+
     return (
         <>
             <div>
-                <h2>Create a new recipe:</h2>
+                <h2>Edit your recipe:</h2>
                 <Form>
                     <FormGroup>
                         <Label htmlFor="recipeName">Recipe Name:</Label>
                         <Input
+                            value={newRecipe.name}
                             name="name"
                             onChange={handleRecipeChange}
                         />
                         <Label htmlFor="recipeTagline">Tagline:</Label>
                         <Input
+                            value={newRecipe.tagline}
                             name="tagline"
                             onChange={handleRecipeChange}
                         />
                         <Label htmlFor="recipeImage">Image:</Label>
                         <Input
+                            value={newRecipe.image}
                             name="image"
                             type="url"
                             onChange={handleRecipeChange}
                         />
                         <Label htmlFor="recipeInstructions">Instructions:</Label>
                         <Input
+                            value={newRecipe.instructions}
                             name="instructions"
                             type="textarea"
                             onChange={handleRecipeChange}
@@ -140,7 +175,7 @@ export default function RecipeForm({ loggedInUser }) {
                 {
                     stagedRecipeIngredients.length > 0
                     ?<>{
-                        stagedRecipeIngredients.map((sri) => {
+                        stagedRecipeIngredients?.map((sri) => {
                             const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + sri.image
                             const ingredientName = sri.name.charAt(0).toUpperCase() + sri.name.slice(1)
 
@@ -161,6 +196,7 @@ export default function RecipeForm({ loggedInUser }) {
                                 <Button color="danger" onClick={(e) => handleRemoveIngredient(e, sri.id)}>Remove Ingredient</Button>
                                 <Label htmlFor="ingredientAmount">Amount:</Label>
                                 <Input
+                                    value={sri.amount}
                                     name="amount"
                                     type="number"
                                     onChange={(e) => handleIngredientChange(e, sri)}
@@ -175,7 +211,11 @@ export default function RecipeForm({ loggedInUser }) {
                                     <option>Select a Unit of Measurement</option>
                                     {
                                         sri.possibleUnits.map((pu) => {
-                                            return <option value={pu}>{pu}</option>
+                                            let selectedStatus = false
+                                            if (pu === sri.measurementUnit) {
+                                                selectedStatus = true
+                                            }
+                                            return <option selected={selectedStatus} value={pu}>{pu}</option>
                                         })
                                     }
                                 </Input>
