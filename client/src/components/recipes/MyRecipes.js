@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { deleteRecipe, getMyRecipes } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function MyRecipes({loggedInUser}) {
     const [recipes, setRecipes] = useState([]);
+    const navigate = useNavigate();
 
     const getAllMyRecipes = () => {
         getMyRecipes(loggedInUser.id).then(setRecipes);
@@ -12,7 +14,13 @@ export default function MyRecipes({loggedInUser}) {
     const handleDetailsButton = (e, recipeId) => {
         e.preventDefault();
 
-        window.location.href = `http://localhost:3000/recipes/${recipeId}`
+        navigate(`/recipes/${recipeId}`)
+    };
+    
+    const handleEditButton = (e, recipeId) => {
+        e.preventDefault();
+
+        navigate(`/recipes/edit/${recipeId}`)
     };
 
     const handleDeleteButton = (e, recipeId) => {
@@ -60,7 +68,10 @@ export default function MyRecipes({loggedInUser}) {
                         >
                             Details
                         </Button>
-                        <Button>
+                        <Button
+                            color="success"
+                            onClick={(e) => handleEditButton(e, r.id)}
+                        >
                             Edit
                         </Button>
                         <Button

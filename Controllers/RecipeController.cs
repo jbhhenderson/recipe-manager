@@ -107,6 +107,35 @@ public class RecipeController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{recipeId}")]
+    [Authorize]
+    public IActionResult UpdateRecipe(int recipeId, Recipe recipe)
+    {
+        Recipe foundRecipe = _dbContext.Recipes.SingleOrDefault(r => r.Id == recipeId);
+
+        foundRecipe.Name = recipe.Name;
+        foundRecipe.Tagline = recipe.Tagline;
+        foundRecipe.Image = recipe.Image;
+        foundRecipe.Instructions = recipe.Instructions;
+        _dbContext.SaveChanges();
+
+        List<RecipeIngredient> foundIngredients = _dbContext.RecipeIngredients.Where(ri => ri.RecipeId == recipeId).ToList();
+        _dbContext.RecipeIngredients.RemoveRange(foundIngredients);
+        _dbContext.SaveChanges();
+
+        foreach(RecipeIngredient ri in recipe.RecipeIngredients)
+        {
+            var originalList = _dbContext.RecipeIngredients;
+            _dbContext.RecipeIngredients.Add(ri);
+            _dbContext.SaveChanges();
+            var updatedList = _dbContext.RecipeIngredients;
+        }
+
+        _dbContext.SaveChanges();
+
+        return NoContent();
+    }
+
     [HttpPost("recipe-ingredient")]
     [Authorize]
     public IActionResult CreateRecipeIngredient(RecipeIngredient recipeIngredient)
