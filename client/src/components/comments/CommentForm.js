@@ -31,7 +31,7 @@ export default function CommentForm({ loggedInUser, recipeId, getThisRecipesComm
                     onChange={(e) => setText(e.target.value)}
                 />
             </CardBody>
-            <Button color="success" onClick={handleSubmit}>Submit</Button>
+            <Button color="success" onClick={handleSubmit} style={{width: "25%"}}>Submit</Button>
         </Card>
     </>)
 };

@@ -52,12 +52,6 @@ export default function MyFavoriteRecipes({loggedInUser}) {
                         >
                             Details
                         </Button>
-                        <Button>
-                            Edit
-                        </Button>
-                        <Button>
-                            Delete
-                        </Button>
                     </CardBody>
                 </Card>
             })

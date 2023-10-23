@@ -105,6 +105,8 @@ export default function RecipeDetails({ loggedInUser }) {
         </small>
       </CardText>
     </CardBody>
-    <CommentList loggedInUser={loggedInUser} recipeId={recipe.id} comments={comments} getThisRecipesComments={getThisRecipesComments}/>
+    <div style={{width: "25%"}} >
+      <CommentList loggedInUser={loggedInUser} recipeId={recipe.id} comments={comments} getThisRecipesComments={getThisRecipesComments}/>
+    </div>
   </Card>
 }
