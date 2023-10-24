@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addFavorite, getFavoriteStatus, getRecipeById, removeFavorite } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardImg, CardText, CardTitle } from "reactstrap";
-import { getIngredientById } from "../../managers/ingredientManager";
+import { cookIngredients, getIngredientById } from "../../managers/ingredientManager";
 import CommentList from "../comments/CommentList";
 import { getRecipeComments } from "../../managers/commentManager";
 
@@ -11,6 +11,7 @@ export default function RecipeDetails({ loggedInUser }) {
     const [favoriteStatus, setFavoriteStatus] = useState(false);
     const { recipeId } = useParams();
     const [comments, setComments] = useState([]);
+    const navigate = useNavigate();
 
     const getThisRecipesComments = () => {
         getRecipeComments(recipeId).then(setComments);
@@ -37,6 +38,13 @@ export default function RecipeDetails({ loggedInUser }) {
       removeFavorite(loggedInUser.id, recipeId)
         .then(() => getRecipeFavoriteStatus())
     }
+
+    const handleCookButton = (e) => {
+      e.preventDefault();
+
+      cookIngredients(loggedInUser.id, recipeId)
+        .then(() => navigate("/my-pantry"))
+    };
 
     useEffect(() => {
         getThisRecipe();
@@ -98,6 +106,7 @@ export default function RecipeDetails({ loggedInUser }) {
           ? <Button color="danger" onClick={handleRemoveFavorite}> Unfavorite </Button>
           : <Button color="success" onClick={handleAddFavorite}> Favorite </Button>
         }
+        <Button color="danger" onClick={handleCookButton}>I Cooked This</Button>
       </CardText>
       <CardText>
         <small className="text-muted">
