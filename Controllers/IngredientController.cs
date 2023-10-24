@@ -18,6 +18,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<IActionResult> GetById(int id)
     {
         var ingredient = await _ingredientService.GetById(id);
@@ -25,6 +26,7 @@ public class IngredientController : ControllerBase
     }
 
     [HttpGet("pantry/{userId}")]
+    [Authorize]
     public async Task<IActionResult> GetPantryByUserId(int userId)
     {
         var foundUserPantryIngredients = _dbContext.UserPantryItems.Where(upi => upi.UserProfileId == userId);
@@ -68,6 +70,7 @@ public class IngredientController : ControllerBase
     }
     
     [HttpGet("shopping-list/{userId}")]
+    [Authorize]
     public async Task<IActionResult> GetShoppingListByUserId(int userId)
     {
         var foundUserShoppingListIngredients = _dbContext.ShoppingListItems.Where(sli => sli.UserProfileId == userId);
@@ -111,10 +114,32 @@ public class IngredientController : ControllerBase
     }
 
     [HttpGet("search-ingredients/{ingredientName}")]
+    [Authorize]
     public async Task<IActionResult> GetSearchResults(string ingredientName)
     {
         Object searchResult = await _ingredientService.SearchIngredients(ingredientName);
 
         return Ok(searchResult);
+    }
+
+    [HttpDelete("{userId}/cook/{recipeId}")]
+    [Authorize]
+    public IActionResult CookIngredients(int userId, int recipeId)
+    {
+        List<RecipeIngredient> recipeIngredients = _dbContext.RecipeIngredients.Where(ri => ri.RecipeId == recipeId).ToList();
+
+        foreach (RecipeIngredient recipeIngredient in recipeIngredients) 
+        {
+            UserPantryItem foundPantryItem = _dbContext.UserPantryItems.SingleOrDefault(upi => upi.IngredientNumber == recipeIngredient.IngredientNumber && upi.UserProfileId == userId);
+
+            if (foundPantryItem != null)
+            {                
+                _dbContext.UserPantryItems.Remove(foundPantryItem);
+            }
+        }
+
+        _dbContext.SaveChanges();
+
+        return NoContent();
     }
 }

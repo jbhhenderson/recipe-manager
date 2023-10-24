@@ -43,3 +43,9 @@ export const removeShoppingListItem = (shoppingListItemId) => {
 export const searchIngredients = async (ingredientName) => {
     return await fetch(`${_apiUrl}/search-ingredients/${ingredientName}`).then((res) => res.json());
 };
+
+export const cookIngredients = (userId, recipeId) => {
+    return fetch(`${_apiUrl}/${userId}/cook/${recipeId}`, {
+        method: "DELETE"
+    })
+}
