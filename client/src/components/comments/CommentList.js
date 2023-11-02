@@ -29,23 +29,25 @@ export default function CommentList ({loggedInUser, recipeId, comments, getThisR
             .then(() => getThisRecipesComments())
     }
 
-    return (<>
+    return (<div>
     <CommentForm loggedInUser={loggedInUser} recipeId={recipeId} getThisRecipesComments={getThisRecipesComments}/>
     {
         comments.map((c) => {
-            return <Card>
+            return <Card style={{
+                marginTop: "1rem"
+            }}>
                 <CardTitle>Comment By: {c.userProfile.firstName} {c.userProfile.lastName}</CardTitle>
                 <CardBody>
                     {c.body}
                 </CardBody>
                 {
                     c.userProfileId === loggedInUser.id 
-                    ? <div style={{width: "30%"}}>
-                        <Button color="danger" onClick={(e) => handleDelete(e, c.id)}>Delete Comment</Button>
-                        <Button color="primary" onClick={() => {
+                    ? <div style={{width: "30%", display: "flex", marginLeft: "1rem", marginBottom: "1rem"}}>
+                        <Button outline style={{marginRight: "1rem"}} color="danger" onClick={(e) => handleDelete(e, c.id)}>Delete</Button>
+                        <Button outline color="primary" onClick={() => {
                             toggle() 
                             setCommentToEdit(c)
-                        }}>Edit Comment</Button>
+                        }}>Edit</Button>
                     </div>
                     : <></>
                 }
@@ -71,5 +73,5 @@ export default function CommentList ({loggedInUser, recipeId, comments, getThisR
             </Button>
         </ModalFooter>
     </Modal>
-    </>)
+    </div>)
 };

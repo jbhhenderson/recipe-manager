@@ -34,6 +34,8 @@ export default function RecipeForm({ loggedInUser }) {
     const handleAddIngredient = (e, ingredientId) => {
         e.preventDefault();
 
+        toggleOffcanvas();
+
         getIngredientById(ingredientId)
             .then((res) => {
                 const stagedIngredient = res;
@@ -101,24 +103,28 @@ export default function RecipeForm({ loggedInUser }) {
                 <h2>Create a new recipe:</h2>
                 <Form>
                     <FormGroup>
-                        <Label htmlFor="recipeName">Recipe Name:</Label>
+                        <Label htmlFor="recipeName" style={{marginLeft: "1rem"}}>Recipe Name:</Label>
                         <Input
+                            style={{width: "40%", margin:"1rem"}}
                             name="name"
                             onChange={handleRecipeChange}
                         />
-                        <Label htmlFor="recipeTagline">Tagline:</Label>
+                        <Label htmlFor="recipeTagline" style={{marginLeft: "1rem"}}>Tagline:</Label>
                         <Input
+                            style={{width: "40%", margin:"1rem"}}
                             name="tagline"
                             onChange={handleRecipeChange}
                         />
-                        <Label htmlFor="recipeImage">Image:</Label>
+                        <Label htmlFor="recipeImage" style={{marginLeft: "1rem"}}>Image URL:</Label>
                         <Input
+                            style={{width: "40%", margin:"1rem"}}
                             name="image"
                             type="url"
                             onChange={handleRecipeChange}
                         />
-                        <Label htmlFor="recipeInstructions">Instructions:</Label>
+                        <Label htmlFor="recipeInstructions" style={{marginLeft: "1rem"}}>Instructions:</Label>
                         <Input
+                            style={{width: "40%", margin:"1rem"}}
                             name="instructions"
                             type="textarea"
                             onChange={handleRecipeChange}
@@ -126,52 +132,56 @@ export default function RecipeForm({ loggedInUser }) {
                     </FormGroup>
                 </Form>
                 <Button
+                    outline
+                    style={{margin: "1rem"}}
                     color="primary"
                     onClick={toggleOffcanvas}
                 >
                     Add Ingredients
                 </Button>
                 <Button 
+                    outline
                     color="success"
                     onClick={handleSubmit}
                 >
                     Submit Recipe
                 </Button>
+                <div style={{display: "flex"}}>
                 {
                     stagedRecipeIngredients.length > 0
                     ?<>{
                         stagedRecipeIngredients.map((sri) => {
                             const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + sri.image
                             const ingredientName = sri.name.charAt(0).toUpperCase() + sri.name.slice(1)
-
-                            return <Card style={{width:200}} id={sri.id}>
+                            
+                            return <Card style={{width:200, margin: "1rem"}} id={sri.id}>
                             <img
                                 alt="Card image"
                                 src={ingredientImageLink}
                                 style={{alignSelf: "center"}}
                                 width="100px"
                                 height="100px"
-                            />
+                                />
                             <CardBody>
                                 <CardTitle tag="h5">
                                     {ingredientName}
                                 </CardTitle>
                             </CardBody>
                             <CardBody>
-                                <Button color="danger" onClick={(e) => handleRemoveIngredient(e, sri.id)}>Remove Ingredient</Button>
+                                <Button outline color="danger" onClick={(e) => handleRemoveIngredient(e, sri.id)}>Remove Ingredient</Button>
                                 <Label htmlFor="ingredientAmount">Amount:</Label>
                                 <Input
                                     name="amount"
                                     type="number"
                                     onChange={(e) => handleIngredientChange(e, sri)}
-                                />
+                                    />
                                 <Label htmlFor="ingredientUnit">Measurement Unit</Label>
                                 <Input
                                     id="unitSelect"
                                     name="measurementUnit"
                                     type="select"
                                     onChange={(e) => handleIngredientChange(e, sri)}
-                                >
+                                    >
                                     <option>Select a Unit of Measurement</option>
                                     {
                                         sri.possibleUnits.map((pu) => {
@@ -185,17 +195,21 @@ export default function RecipeForm({ loggedInUser }) {
                     }</>
                     :<></>
                 }
+                </div>
                 <Offcanvas isOpen={isOpen} toggle={toggleOffcanvas}>
                     <OffcanvasHeader>
                     Find an ingredient to add to your recipe:
                     </OffcanvasHeader>
                     <OffcanvasBody>
                         <Input
+                            style={{marginBottom: "1rem"}}
                             name="searchTerm"
                             placeholder="Search"
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <Button
+                            outline
+                            style={{marginBottom: "1rem"}}
                             color="primary"
                             onClick={handleSearchButton}
                         >
@@ -208,7 +222,7 @@ export default function RecipeForm({ loggedInUser }) {
                                     const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + r.image
                                     const ingredientName = r.name.charAt(0).toUpperCase() + r.name.slice(1)
 
-                                    return <Card style={{width:200}} id={r.id}>
+                                    return <Card style={{width:200, margin: "1rem"}} id={r.id}>
                                     <img
                                         alt="Card image"
                                         src={ingredientImageLink}
@@ -222,6 +236,7 @@ export default function RecipeForm({ loggedInUser }) {
                                         </CardTitle>
                                     </CardBody>
                                     <Button
+                                        outline
                                         color="primary"
                                         onClick={(e) => handleAddIngredient(e, r.id)}
                                     >

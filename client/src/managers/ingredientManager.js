@@ -49,3 +49,15 @@ export const cookIngredients = (userId, recipeId) => {
         method: "DELETE"
     })
 }
+
+export const addMissingRecipeIngredientsToShoppingList = (userId, recipeId) => {
+    return fetch(`${_apiUrl}/${userId}/add-recipe-ingredients-to-shopping-list/${recipeId}`, {
+        method: "POST"
+    })
+}
+
+export const addShoppingListToPantry = (userId) => {
+    return fetch(`${_apiUrl}/add-shopping-list-to-pantry/${userId}`, {
+        method: "POST"
+    })
+}

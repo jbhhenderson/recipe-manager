@@ -1,0 +1,14 @@
+.recipeContainer {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.ingredientContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.recipeDetailsContainer {
+    display: flex;
+}

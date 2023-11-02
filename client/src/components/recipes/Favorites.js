@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMyFavoriteRecipes } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
+import "./Recipe.css"
 
 export default function MyFavoriteRecipes({loggedInUser}) {
     const [favoriteRecipes, setFavoriteRecipes] = useState([]);
@@ -20,19 +21,21 @@ export default function MyFavoriteRecipes({loggedInUser}) {
     }, [])
 
     return (
-        <CardGroup>
+        <div className="recipeContainer">
         {
             favoriteRecipes.map((fr) => {
                 return <Card
                     style={{
-                        width: '18rem'
+                        width: '18rem',
+                        margin: "1rem"
                     }}
                 >
                     <img
                         alt="Sample"
                         src={fr.recipe.image}
                         top
-                        width= '200rem'
+                        width= '286rem'
+                        height= '300 rem'
                     />
                     <CardBody>
                         <CardTitle tag="h5">
@@ -42,12 +45,14 @@ export default function MyFavoriteRecipes({loggedInUser}) {
                             className="mb-2 text-muted"
                             tag="h6"
                         >
-                            {fr.recipe.dateCreated}
+                            {fr.recipe.dateCreated.split("T")[0]}
                         </CardSubtitle>
                         <CardText>
                             {fr.recipe.tagline}
                         </CardText>
                         <Button 
+                            outline
+                            color="primary"
                             onClick={(e) => handleDetailsButton(e, fr.recipe.id)}
                         >
                             Details
@@ -56,6 +61,6 @@ export default function MyFavoriteRecipes({loggedInUser}) {
                 </Card>
             })
         }
-        </CardGroup>
+        </div>
     )
 };

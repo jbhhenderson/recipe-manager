@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { deleteRecipe, getMyRecipes } from "../../managers/recipeManager";
 import { Button, Card, CardBody, CardGroup, CardSubtitle, CardText, CardTitle } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import "./Recipe.css"
 
 export default function MyRecipes({loggedInUser}) {
     const [recipes, setRecipes] = useState([]);
@@ -35,19 +36,21 @@ export default function MyRecipes({loggedInUser}) {
     }, [])
 
     return (
-        <CardGroup>
+        <div className="recipeContainer">
         {
             recipes.map((r) => {
                 return <Card
                     style={{
-                        width: '18rem'
+                        width: '18rem',
+                        margin: "1rem"
                     }}
                 >
                     <img
                         alt="Sample"
                         src={r.image}
                         top
-                        width= '200rem'
+                        width= '286rem'
+                        height= '300 rem'
                     />
                     <CardBody>
                         <CardTitle tag="h5">
@@ -57,24 +60,29 @@ export default function MyRecipes({loggedInUser}) {
                             className="mb-2 text-muted"
                             tag="h6"
                         >
-                            {r.dateCreated}
+                            {r.dateCreated.split("T")[0]}
                         </CardSubtitle>
                         <CardText>
                             {r.tagline}
                         </CardText>
                         <Button 
+                            outline
+                            style={{marginRight: "1rem"}}
                             color="primary"
                             onClick={(e) => handleDetailsButton(e, r.id)}
                         >
                             Details
                         </Button>
                         <Button
+                            outline
+                            style={{marginRight: "1rem"}}
                             color="success"
                             onClick={(e) => handleEditButton(e, r.id)}
                         >
                             Edit
                         </Button>
                         <Button
+                            outline
                             color="danger"
                             onClick={(e) => handleDeleteButton(e, r.id)}
                         >
@@ -84,6 +92,6 @@ export default function MyRecipes({loggedInUser}) {
                 </Card>
             })
         }
-        </CardGroup>
+        </div>
     )
 };

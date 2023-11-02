@@ -61,3 +61,7 @@ export const removeFavorite = (userId, recipeId) => {
 export const getFavoriteStatus = (userId, recipeId) => {
     return fetch(`${_apiUrl}/user/${userId}/recipe/${recipeId}/is-favorite`).then((res) => res.json())
 }
+
+export const getTopRecipes = () => {
+    return fetch(`${_apiUrl}/favorites/top`).then((res) => res.json())
+};

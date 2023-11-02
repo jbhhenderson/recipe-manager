@@ -1,0 +1,4 @@
+.pantryContainer {
+    display: flex;
+    flex-wrap: wrap;
+}

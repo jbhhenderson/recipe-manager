@@ -18,7 +18,7 @@ export default function CommentForm({ loggedInUser, recipeId, getThisRecipesComm
             .then(() => getThisRecipesComments(recipeId))
     };
 
-    return (<>
+    return (<div style={{marginTop: ".5rem"}}>
         <Card>
             <CardBody>
                 <Label for="commentText">
@@ -31,7 +31,7 @@ export default function CommentForm({ loggedInUser, recipeId, getThisRecipesComm
                     onChange={(e) => setText(e.target.value)}
                 />
             </CardBody>
-            <Button color="success" onClick={handleSubmit} style={{width: "25%"}}>Submit</Button>
+            <Button outline color="success" onClick={handleSubmit} style={{width: "25%", margin: "1rem"}}>Submit</Button>
         </Card>
-    </>)
+    </div>)
 };

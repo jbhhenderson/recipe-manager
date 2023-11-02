@@ -62,6 +62,15 @@ public class RecipeController : ControllerBase
             .OrderByDescending(f => f.Recipe.DateCreated));
     }
 
+    [HttpGet("favorites/top")]
+    [Authorize]
+    public IActionResult GetTopRecipes()
+    {
+        return Ok(_dbContext
+        .Recipes
+        .Take(3));
+    }
+
     [HttpGet("{id}")]
     [Authorize]
     public async Task<IActionResult> GetRecipeByIdAsync(int id)
