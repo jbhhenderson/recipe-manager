@@ -61,6 +61,7 @@ return (
             </Nav>
             </Collapse>
             <Button
+            outline
             color="primary"
             onClick={(e) => {
                 e.preventDefault();

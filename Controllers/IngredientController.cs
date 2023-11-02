@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RecipeManager.Data;
 using RecipeManager.Models;
 
@@ -94,6 +95,65 @@ public class IngredientController : ControllerBase
         _dbContext.SaveChanges();
 
         return Created($"/api/pantry/{shoppingListItem.UserProfileId}/{shoppingListItem.IngredientNumber}", shoppingListItem);
+    }
+
+    [HttpPost("{userId}/add-recipe-ingredients-to-shopping-list/{recipeId}")]
+    [Authorize]
+    public IActionResult AddRecipeIngredientsToShoppingList(int userId, int recipeId)
+    {
+        List<int> foundRecipeIngredients = _dbContext.RecipeIngredients.Where(ri => ri.RecipeId == recipeId).Select(ri => ri.IngredientNumber).ToList();
+
+        List<int> foundUserPantryItems = _dbContext.UserPantryItems.Where(upi => upi.UserProfileId == userId).Select(upi => upi.IngredientNumber).ToList();
+
+        List<int> missingIngredients = new();
+
+        foreach (int ingredient in foundRecipeIngredients)
+        {
+            if (!foundUserPantryItems.Contains(ingredient))
+            {
+                missingIngredients.Add(ingredient);
+            } 
+        }
+
+        foreach (int ingredient in missingIngredients)
+        {
+            ShoppingListItem missingIngredient = new()
+                {
+                    UserProfileId = userId,
+                    IngredientNumber = ingredient
+                };
+
+                _dbContext.ShoppingListItems.Add(missingIngredient);
+                _dbContext.SaveChanges();
+        }
+
+
+        return NoContent();
+    }
+
+    [HttpPost("add-shopping-list-to-pantry/{userId}")]
+    [Authorize]
+    public IActionResult AddShoppingListToPantry(int userId)
+    {
+        List<ShoppingListItem> userShoppingList = _dbContext.ShoppingListItems.Where(sli => sli.UserProfileId == userId).ToList();
+
+        foreach (ShoppingListItem shoppingListItem in userShoppingList)
+        {
+            ShoppingListItem foundItem = _dbContext.ShoppingListItems.SingleOrDefault(sli => sli.UserProfileId == shoppingListItem.UserProfileId && sli.IngredientNumber == shoppingListItem.IngredientNumber);
+
+            UserPantryItem userPantryItem = new()
+            {
+                IngredientNumber = shoppingListItem.IngredientNumber,
+                UserProfileId = userId
+            };
+
+            _dbContext.ShoppingListItems.Remove(foundItem);
+            _dbContext.UserPantryItems.Add(userPantryItem);
+        }
+
+        _dbContext.SaveChanges();
+
+        return NoContent();
     }
 
     [HttpDelete("shopping-list/{id}")]

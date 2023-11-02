@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react"
-import { addShoppingListIngredient, getShoppingListIngredientsByUserId, removeShoppingListItem, searchIngredients } from "../../managers/ingredientManager"
-import { Button, Card, CardBody, CardSubtitle, CardTitle, Input, Offcanvas, OffcanvasBody, OffcanvasHeader } from "reactstrap"
+import { addShoppingListIngredient, addShoppingListToPantry, getShoppingListIngredientsByUserId, removeShoppingListItem, searchIngredients } from "../../managers/ingredientManager"
+import { Button, Card, CardBody, CardFooter, CardSubtitle, CardTitle, Input, Offcanvas, OffcanvasBody, OffcanvasHeader, Spinner } from "reactstrap"
+import { useNavigate } from "react-router-dom";
 
 export default function ShoppingList({ loggedInUser }) {
     const [shoppingListIngredients, setShoppingListIngredients] = useState([])
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const navigate = useNavigate();
 
     const getMyShoppingList = () => {
         getShoppingListIngredientsByUserId(loggedInUser.id).then(setShoppingListIngredients)
@@ -33,6 +35,7 @@ export default function ShoppingList({ loggedInUser }) {
 
         addShoppingListIngredient(ingredientToSendToAPI)
             .then(() => getMyShoppingList());
+        toggleOffcanvas();
     };
 
     const handleRemoveIngredient = (e, shoppingListIngredientId) => {
@@ -42,6 +45,13 @@ export default function ShoppingList({ loggedInUser }) {
             .then(() => getMyShoppingList())
     }
 
+    const handleAddToPantry = (e) => {
+        e.preventDefault();
+
+        addShoppingListToPantry(loggedInUser.id)
+            .then(() => navigate("/my-pantry"))
+    }
+
     useEffect(() => {
         getMyShoppingList()
     }, [])
@@ -49,17 +59,27 @@ export default function ShoppingList({ loggedInUser }) {
     return (
         <div>
             <Button
+                outline
+                style={{margin: "1rem"}}
                 color="primary"
                 onClick={toggleOffcanvas}
             >
                 Add Ingredients
             </Button>
+            <Button
+                outline
+                color="success"
+                onClick={handleAddToPantry}
+            >
+                Add List to Pantry
+            </Button>
+            <div className="pantryContainer">
         {
             shoppingListIngredients?.map((sli) => {
                 const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + sli.ingredient.image
                 const ingredientName = sli.ingredient.name.charAt(0).toUpperCase() + sli.ingredient.name.slice(1)
 
-                return <Card style={{width:200}} id={sli.id}>
+                return <Card style={{width:200, margin: "1rem"}} id={sli.id}>
                 <img
                     alt="Card image"
                     src={ingredientImageLink}
@@ -77,27 +97,34 @@ export default function ShoppingList({ loggedInUser }) {
                     >
                         {sli.ingredient.aisle}
                     </CardSubtitle>
+                </CardBody>
+                <CardFooter>
                     <Button
-                        color="danger"
-                        onClick={(e) => handleRemoveIngredient(e, sli.id)}
+                    outline
+                    color="danger"
+                    onClick={(e) => handleRemoveIngredient(e, sli.id)}
                     >
                         Remove Ingredient
                     </Button>
-                </CardBody>
+                </CardFooter>
             </Card>
             })
         }
+        </div>
         <Offcanvas isOpen={isOpen} toggle={toggleOffcanvas}>
             <OffcanvasHeader>
             Find ingredients to add to your pantry:
             </OffcanvasHeader>
             <OffcanvasBody>
                 <Input
+                    style={{marginBottom: "1rem"}}
                     name="searchTerm"
                     placeholder="Search"
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <Button
+                    outline
+                    style={{marginBottom: "1rem"}}
                     color="primary"
                     onClick={handleSearchButton}
                 >
@@ -110,7 +137,7 @@ export default function ShoppingList({ loggedInUser }) {
                             const ingredientImageLink = "https://spoonacular.com/cdn/ingredients_500x500/" + r.image
                             const ingredientName = r.name.charAt(0).toUpperCase() + r.name.slice(1)
 
-                            return <Card style={{width:200}} id={r.id}>
+                            return <Card style={{width:200, margin: "1rem"}} id={r.id}>
                             <img
                                 alt="Card image"
                                 src={ingredientImageLink}
@@ -124,6 +151,7 @@ export default function ShoppingList({ loggedInUser }) {
                                 </CardTitle>
                             </CardBody>
                             <Button
+                                outline
                                 color="primary"
                                 onClick={(e) => handleAddIngredient(e, r.id)}
                             >
