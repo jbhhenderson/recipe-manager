@@ -110,12 +110,12 @@ export default function RecipeDetails({ loggedInUser }) {
                     cardColor = ""
                   }
                 })
-                return <Card style={{width:125, marginRight: "1rem", marginBottom: "1rem"}} color={cardColor}>
+                return <Card style={{width:150, marginRight: "1rem", marginBottom: "1rem"}} color={cardColor}>
                     <img
                         alt="Card image"
                         src={ingredientImageLink}
                         style={{alignSelf: "center"}}
-                        width="100px"
+                        width="125px"
                         height="100px"
                         />
                     <CardBody>
